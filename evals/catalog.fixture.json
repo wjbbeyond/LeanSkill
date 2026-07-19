@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "generated_at": "1970-01-01T00:00:00+00:00",
+  "skills": [
+    {"id": "fixture:frontend-builder", "name": "frontend-app-builder", "invocation": "build-web-apps:frontend-app-builder", "description": "Build frontend applications", "path": "/fixture/frontend-builder", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["frontend"], "trust_tier": "official-plugin"},
+    {"id": "fixture:frontend-test", "name": "frontend-testing-debugging", "invocation": "build-web-apps:frontend-testing-debugging", "description": "Test frontend applications", "path": "/fixture/frontend-test", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["testing"], "trust_tier": "official-plugin"},
+    {"id": "fixture:browser", "name": "control-in-app-browser", "invocation": "browser:control-in-app-browser", "description": "Control a browser", "path": "/fixture/browser", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["testing"], "trust_tier": "official-plugin"},
+    {"id": "fixture:frontend-design", "name": "frontend-design", "invocation": "frontend-design", "description": "Design premium interfaces", "path": "/fixture/frontend-design", "origin": "shared", "status": "available-explicit", "implicit_invocation": false, "capabilities": ["visual-design"], "trust_tier": "community-local"},
+    {"id": "fixture:swiftui", "name": "swiftui-ui-patterns", "invocation": "build-ios-apps:swiftui-ui-patterns", "description": "Build SwiftUI interfaces", "path": "/fixture/swiftui", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["ios"], "trust_tier": "official-plugin"},
+    {"id": "fixture:ios-test", "name": "ios-simulator-browser", "invocation": "build-ios-apps:ios-simulator-browser", "description": "Verify iOS apps", "path": "/fixture/ios-test", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["ios", "testing"], "trust_tier": "official-plugin"},
+    {"id": "fixture:game", "name": "game-studio", "invocation": "game-studio:game-studio", "description": "Route browser game development", "path": "/fixture/game", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["game"], "trust_tier": "official-plugin"},
+    {"id": "fixture:backend", "name": "backend-architect", "invocation": "backend-architect", "description": "Design backend systems", "path": "/fixture/backend", "origin": "shared", "status": "available-explicit", "implicit_invocation": false, "capabilities": ["backend"], "trust_tier": "community-local"},
+    {"id": "fixture:agent", "name": "agents-sdk", "invocation": "openai-developers:agents-sdk", "description": "Build AI agents", "path": "/fixture/agent", "origin": "official-plugin", "status": "preferred", "implicit_invocation": true, "capabilities": ["automation"], "trust_tier": "official-plugin"},
+    {"id": "fixture:security", "name": "security-audit", "invocation": "security-audit", "description": "Audit security", "path": "/fixture/security", "origin": "shared", "status": "available-explicit", "implicit_invocation": false, "capabilities": ["security"], "trust_tier": "community-local"}
+  ],
+  "plugins": []
+}

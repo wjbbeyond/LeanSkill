@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {"name": "react-premium-ui", "markers": {"package.json": "{\"dependencies\":{\"react\":\"latest\",\"vite\":\"latest\"}}"}, "task": "设计并实现高端美观的响应式界面", "expected_type": "web", "expected_quality": "premium-visual", "expected_primary": "build-web-apps:frontend-app-builder", "expected_specialists": ["frontend-design"]},
+    {"name": "web-tests", "markers": {"package.json": "{\"dependencies\":{\"next\":\"latest\"}}"}, "task": "测试和调试现有页面", "expected_type": "web", "expected_phase": "test", "expected_primary": "build-web-apps:frontend-testing-debugging", "expected_specialists": ["browser:control-in-app-browser"]},
+    {"name": "swiftui", "markers": {"Demo.xcodeproj": ""}, "task": "实现 SwiftUI 设置页", "expected_type": "ios", "expected_primary": "build-ios-apps:swiftui-ui-patterns"},
+    {"name": "swiftui-test", "markers": {"Demo.xcworkspace": ""}, "task": "在模拟器测试和验收", "expected_type": "ios", "expected_phase": "test", "expected_primary": "build-ios-apps:ios-simulator-browser"},
+    {"name": "phaser-game", "markers": {"package.json": "{\"dependencies\":{\"phaser\":\"latest\"}}"}, "task": "开发 2D 游戏关卡", "expected_type": "game", "expected_primary": "game-studio:game-studio"},
+    {"name": "three-game", "markers": {"package.json": "{\"dependencies\":{\"three\":\"latest\"}}"}, "task": "开发 3D Web 游戏", "expected_type": "game", "expected_primary": "game-studio:game-studio"},
+    {"name": "expo-gap", "markers": {"package.json": "{\"dependencies\":{\"expo\":\"latest\"}}"}, "task": "开发跨平台 App", "expected_type": "mobile-cross-platform", "expected_primary": null, "expected_gap": "expo@openai-curated"},
+    {"name": "android-gap", "markers": {"build.gradle.kts": ""}, "task": "实现 Android 页面", "expected_type": "android", "expected_primary": null, "expected_gap": "test-android-apps@openai-curated"},
+    {"name": "go-api", "markers": {"go.mod": "module test"}, "task": "设计 API 和数据库", "expected_type": "backend", "expected_phase": "architecture", "expected_primary": "backend-architect"},
+    {"name": "python-agent", "markers": {"pyproject.toml": "[project]"}, "task": "开发一个 AI Agent", "expected_type": "backend", "expected_primary": "openai-developers:agents-sdk"},
+    {"name": "security", "markers": {"package.json": "{\"dependencies\":{\"react\":\"latest\"}}"}, "task": "修复生产环境鉴权和密钥安全", "expected_type": "web", "expected_phase": "security", "expected_risk": "high", "expected_primary": "build-web-apps:frontend-app-builder", "expected_specialists": ["security-audit"]},
+    {"name": "release", "markers": {"package.json": "{\"dependencies\":{\"react\":\"latest\"}}"}, "task": "部署并发布到生产环境", "expected_type": "web", "expected_phase": "release", "expected_risk": "high", "expected_primary": "build-web-apps:frontend-app-builder", "expected_specialists": ["security-audit"]}
+  ]
+}

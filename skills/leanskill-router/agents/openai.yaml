@@ -1,0 +1,6 @@
+interface:
+  display_name: "LeanSkill Router"
+  short_description: "Route projects to a minimal, verified skill set"
+  default_prompt: "Use $leanskill-router to choose and explain the smallest verified skill set for this project."
+policy:
+  allow_implicit_invocation: true

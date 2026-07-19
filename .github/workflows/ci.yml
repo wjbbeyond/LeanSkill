@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile Python
+        run: python -m compileall -q scripts skills tests
+      - name: Validate fixture catalog
+        run: python scripts/validate_catalog.py evals/catalog.fixture.json
+      - name: Evaluate routing
+        run: python scripts/evaluate_router.py --catalog evals/catalog.fixture.json --router skills/leanskill-router/scripts/route.py
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Check release package
+        run: python scripts/release_check.py

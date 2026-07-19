@@ -1,0 +1,10 @@
+{
+  "project_type": "web-app",
+  "phase": "design",
+  "quality": "premium-visual",
+  "risk": "medium",
+  "primary": "frontend-design",
+  "specialists": ["design-taste-frontend"],
+  "gates": ["visual-target", "responsive-evidence", "runtime-screenshot"],
+  "gaps": []
+}

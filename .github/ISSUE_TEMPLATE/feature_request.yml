@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a bounded routing or safety improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Capability gap
+      description: What real task is not covered by native Codex or the current catalog?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and expected benefit
+      description: Include reproducible examples and token/time/quality impact when available.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety and overlap
+      description: What permissions, dependencies, and overlapping skills are involved?

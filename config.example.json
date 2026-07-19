@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "lab_root": "/absolute/path/to/LeanSkill",
+  "catalog_path": "/absolute/path/to/LeanSkill/catalog/registry.json"
+}
