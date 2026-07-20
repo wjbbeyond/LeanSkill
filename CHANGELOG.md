@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1-beta - 2026-07-20
+
+- Fixed project-type detection for genuinely new, empty repositories by using explicit task-language fallbacks.
+- Added empty-repository Web/PWA and browser-game planning regressions.
+
 ## 0.2.0-beta - 2026-07-20
 
 - Changed routing to **Plan Once, Execute Native**: one new-project plan, then native Codex execution.

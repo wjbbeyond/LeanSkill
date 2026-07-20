@@ -144,7 +144,7 @@ See [Operating Model](docs/OPERATING_MODEL.md), [Architecture](docs/ARCHITECTURE
 
 ## Status
 
-`v0.2.0-beta` introduces Plan Once, Execute Native, explicit-only invocation, a persisted advisory project plan, evidence-aware ranking, bounded first-pass inspection, anonymous local outcomes, negation-safe intent parsing, and Skill/plugin developer-tool routing. Real-project Token comparisons are still being collected; unknown efficiency remains explicitly unknown.
+`v0.2.1-beta` fixes planning for genuinely new, empty repositories. `v0.2.0-beta` introduced Plan Once, Execute Native, explicit-only invocation, a persisted advisory project plan, evidence-aware ranking, bounded first-pass inspection, anonymous local outcomes, negation-safe intent parsing, and Skill/plugin developer-tool routing. Real-project Token comparisons are still being collected; unknown efficiency remains explicitly unknown.
 
 ## License
 

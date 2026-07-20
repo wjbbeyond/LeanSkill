@@ -204,6 +204,20 @@ def detect_project_type(project: Path, task: str = "") -> str:
         return "backend"
     if "wrangler.toml" in names or "wrangler.jsonc" in names:
         return "backend"
+    if re.search(r"\bgame\b|browser game|2d game|3d game|游戏|关卡|玩法", task_value):
+        return "game"
+    if re.search(r"cross.?platform|react native|\bexpo\b|跨平台", task_value):
+        return "mobile-cross-platform"
+    if re.search(r"\bios\b|iphone|ipad|swiftui|苹果应用", task_value):
+        return "ios"
+    if re.search(r"\bandroid\b|kotlin|安卓", task_value):
+        return "android"
+    if re.search(r"\bmacos\b|mac app|mac 应用", task_value):
+        return "macos"
+    if re.search(r"\bweb\b|website|\bpwa\b|front.?end|browser app|网页|网站|前端", task_value):
+        return "web"
+    if re.search(r"backend|\bapi\b|database|server|worker|ai agent|\bagent\b|llm|后端|接口|数据库|智能体", task_value):
+        return "backend"
     return "unknown"
 
 

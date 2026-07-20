@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.2.0-beta"
+VERSION = "0.2.1-beta"
 START_MARKER = "<!-- LEANSKILL:START -->"
 END_MARKER = "<!-- LEANSKILL:END -->"
 AGENTS_BLOCK = """<!-- LEANSKILL:START -->
