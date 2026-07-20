@@ -37,7 +37,11 @@ def main() -> int:
             project.mkdir()
             for relative, content in case["markers"].items():
                 path = project / relative
-                path.mkdir(parents=True) if relative.endswith((".xcodeproj", ".xcworkspace")) else path.write_text(content, encoding="utf-8")
+                if relative.endswith((".xcodeproj", ".xcworkspace")):
+                    path.mkdir(parents=True)
+                else:
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(content, encoding="utf-8")
             result = router.build_route(project, case["task"], catalog, None, None, None)
             checks = {
                 "project_type": result["profile"]["project_type"] == case["expected_type"],
@@ -49,6 +53,11 @@ def main() -> int:
                 "gap": "expected_gap" not in case or any(gap.get("candidate_plugin") == case["expected_gap"] for gap in result["gaps"]),
                 "max_three": result["selected_count"] <= 3,
                 "no_auto_install": result["rules"]["auto_install"] is False,
+                "plan_once": result["rules"]["routing_mode"] == "plan-once",
+                "no_automatic_reroute": result["rules"]["automatic_reroute"] is False,
+                "native_execution": result["rules"]["post_plan_owner"] == "native-codex",
+                "receipt_before_scan": result["rules"]["receipt_before_deep_inspection"] is True,
+                "bounded_first_pass": result["rules"]["pre_route_command_batches"] <= 5,
             }
             if not all(checks.values()):
                 failures.append({"case": case["name"], "checks": checks, "result": result})

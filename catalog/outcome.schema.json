@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/wjbbeyond/LeanSkill/main/catalog/outcome.schema.json",
+  "title": "LeanSkill Anonymous Outcome",
+  "type": "object",
+  "required": ["schema_version", "profile", "route", "outcome"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "profile": {
+      "type": "object",
+      "required": ["project_type", "phase", "quality", "risk"],
+      "properties": {
+        "project_type": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "phase": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "quality": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "risk": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+      },
+      "additionalProperties": false
+    },
+    "route": {
+      "type": "object",
+      "required": ["primary", "specialists"],
+      "properties": {
+        "primary": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "specialists": {"type": "array", "maxItems": 2, "items": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}}
+      },
+      "additionalProperties": false
+    },
+    "outcome": {
+      "type": "object",
+      "required": ["status", "gates", "external_blockers", "token_efficiency"],
+      "properties": {
+        "status": {"enum": ["success", "local-success", "local-success-external-blocked", "partial", "failure", "blocked"]},
+        "gates": {
+          "type": "object",
+          "propertyNames": {"pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+          "additionalProperties": {"enum": ["pass", "fail", "blocked", "not-run"]}
+        },
+        "external_blockers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["database", "payments", "queue", "object-storage", "external-provider", "deployment", "secrets", "production-data"]}
+        },
+        "token_efficiency": {"enum": ["better", "neutral", "worse", "unknown"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

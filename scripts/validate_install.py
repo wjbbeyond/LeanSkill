@@ -65,9 +65,12 @@ def main() -> int:
     checks["enabled_plugin_count"] = sum(1 for item in catalog.get("plugins", []) if item.get("status") == "installed-enabled")
 
     checks["router_skill_exists"] = (router / "SKILL.md").is_file()
-    checks["router_implicit"] = has_policy(router / "agents" / "openai.yaml", True)
+    checks["routing_mode_plan_once"] = config.get("routing_mode") == "plan-once"
+    checks["router_explicit_only"] = has_policy(router / "agents" / "openai.yaml", False)
     agents_text = global_agents.read_text(encoding="utf-8", errors="replace") if global_agents.is_file() else ""
     checks["global_agents_routes"] = "$leanskill-router" in agents_text
+    checks["global_agents_native_execution"] = "native Codex owns execution" in agents_text
+    checks["global_agents_no_auto_reroute"] = "Re-run it only when the user explicitly asks" in agents_text
     checks["install_manifest_exists"] = (codex_home / "leanskill" / "install-manifest.json").is_file()
 
     targets = user_skill_dirs(codex_home / "skills", args.shared_skills.expanduser().resolve())

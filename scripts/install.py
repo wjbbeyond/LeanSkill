@@ -17,17 +17,19 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.1.0-beta"
+VERSION = "0.2.0-beta"
 START_MARKER = "<!-- LEANSKILL:START -->"
 END_MARKER = "<!-- LEANSKILL:END -->"
 AGENTS_BLOCK = """<!-- LEANSKILL:START -->
 # LeanSkill capability routing
 
-For a new software, app, website, game, AI, or major product-development task, use `$leanskill-router` before substantial implementation. Re-route only at a major phase boundary, a failed gate, or a material change in platform, scope, quality, risk, or cost.
+Use `$leanskill-router` exactly once before substantial implementation when planning a genuinely new software, app, website, game, or AI project. Run its deterministic helper with `--write-plan` and emit the generated route receipt verbatim; never invent or adjust scores. If `docs/LEANSKILL_PLAN.md` already exists, do not re-run LeanSkill unless the user explicitly requests re-planning.
 
-Keep the route small: one primary skill and at most two specialists. Select only capabilities present in the verified LeanSkill catalog. Never install, enable, download, or execute a new skill or plugin without explicit user approval.
+Do not use LeanSkill automatically for an existing project, a feature in an existing project, implementation continuation, a phase change, a failed gate, Q&A, status, diagnosis, research, API/provider selection, or a routine edit. Re-run it only when the user explicitly asks for `$leanskill-router` or capability re-planning.
 
-For user-facing UI, establish a visual target and design tokens before implementation, then verify the real rendered surface in a browser or simulator. Routine small edits do not require re-routing. Do not deploy, publish, spend money, use production data, or mutate external systems without user authority.
+After the initial plan, native Codex owns execution and directly chooses installed specialist Skills when they add concrete value. It may explicitly invoke an installed explicit-only Skill by its exact invocation name when the saved plan or current task supplies concrete evidence; this is direct Skill use, not LeanSkill re-routing. Consult `docs/LEANSKILL_PLAN.md` as advisory context during project orientation; do not preload its shortlist or treat it as a whitelist. Count transitive Skill dependencies toward the one-primary-plus-two-specialists planning limit. Never install, enable, download, or execute a new skill or plugin without explicit user approval.
+
+For user-facing UI, native Codex must establish a visual target and design tokens before implementation, then verify the real rendered surface in a browser or simulator. Do not deploy, publish, spend money, use production data, or mutate external systems without user authority.
 <!-- LEANSKILL:END -->"""
 
 
@@ -259,14 +261,18 @@ def install(args: argparse.Namespace, p: dict[str, Path]) -> int:
     manifest = json.loads(p["manifest"].read_text(encoding="utf-8")) if existing else initial_manifest(p)
     if existing:
         verify_managed(manifest, p, args.force)
+    previous_config = json.loads(p["config"].read_text(encoding="utf-8")) if p["config"].is_file() else {}
 
     atomic_copy_tree(p["source_skill"], p["skill_target"])
     agents_original = p["global_agents"].read_text(encoding="utf-8", errors="strict") if p["global_agents"].exists() else ""
     atomic_write(p["global_agents"], replace_agents_block(agents_original).encode("utf-8"))
     config = {
         "schema_version": 1,
+        "routing_mode": "plan-once",
         "lab_root": str(p["repo_root"]),
         "catalog_path": str(p["repo_root"] / "catalog" / "registry.json"),
+        "feedback_path": str(p["repo_root"] / "state" / "outcomes.jsonl"),
+        "record_outcomes": bool(args.record_outcomes or previous_config.get("record_outcomes", False)),
     }
     atomic_write(p["config"], (json.dumps(config, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
     legacy_migrated = set_legacy_explicit_only(p["legacy_policy"])
@@ -390,6 +396,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--skip-plugins", action="store_true")
     result.add_argument("--dry-run", action="store_true")
     result.add_argument("--force", action="store_true")
+    result.add_argument("--record-outcomes", action="store_true")
     return result
 
 

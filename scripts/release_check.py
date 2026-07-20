@@ -22,12 +22,16 @@ REQUIRED = [
     "scripts/install.py",
     "scripts/policy_manager.py",
     "catalog/schema.json",
+    "catalog/outcome.schema.json",
     "catalog/registry.example.json",
     "catalog/candidates.example.json",
     "catalog/verified.example.json",
     "catalog/rejected.example.json",
     "catalog/gaps.example.json",
     "evals/catalog.fixture.json",
+    "evals/outcome.fixture.json",
+    "skills/leanskill-router/references/value-model.md",
+    "skills/leanskill-router/scripts/record_outcome.py",
     ".github/workflows/ci.yml",
 ]
 SKIP_PARTS = {".git", "__pycache__", "quarantine", "reports"}
@@ -48,7 +52,12 @@ PATTERNS = {
 
 
 def tracked_files() -> list[Path] | None:
-    process = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=False)
+    process = subprocess.run(
+        ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
     if process.returncode:
         return None
     return [ROOT / item.decode("utf-8") for item in process.stdout.split(b"\0") if item]
@@ -80,8 +89,24 @@ def main() -> int:
         if not text.startswith("---\n") or "name: leanskill-router" not in text.split("---", 2)[1]:
             errors.append("invalid LeanSkill router frontmatter")
     metadata = ROOT / "skills" / "leanskill-router" / "agents" / "openai.yaml"
-    if metadata.is_file() and "$leanskill-router" not in metadata.read_text(encoding="utf-8", errors="replace"):
-        errors.append("openai.yaml default prompt does not reference $leanskill-router")
+    if metadata.is_file():
+        metadata_text = metadata.read_text(encoding="utf-8", errors="replace")
+        if "$leanskill-router" not in metadata_text:
+            errors.append("openai.yaml default prompt does not reference $leanskill-router")
+        if not re.search(r"^\s*allow_implicit_invocation\s*:\s*false\s*$", metadata_text, re.MULTILINE):
+            errors.append("LeanSkill router must remain explicit-only")
+
+    installer = ROOT / "scripts" / "install.py"
+    if installer.is_file():
+        installer_text = installer.read_text(encoding="utf-8", errors="replace")
+        for required_text in (
+            "routing_mode\": \"plan-once",
+            "native Codex owns execution",
+            "Re-run it only when the user explicitly asks",
+            "explicitly invoke an installed explicit-only Skill",
+        ):
+            if required_text not in installer_text:
+                errors.append(f"installer missing plan-once contract: {required_text}")
 
     try:
         json.loads((ROOT / "catalog" / "schema.json").read_text(encoding="utf-8"))

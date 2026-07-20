@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "profile": {
+    "project_type": "web",
+    "phase": "test",
+    "quality": "production",
+    "risk": "high"
+  },
+  "route": {
+    "primary": "build-web-apps:frontend-testing-debugging",
+    "specialists": [
+      "build-web-apps:react-best-practices",
+      "browser:control-in-app-browser"
+    ]
+  },
+  "outcome": {
+    "status": "local-success-external-blocked",
+    "gates": {
+      "lint": "pass",
+      "typecheck": "pass",
+      "unit": "pass",
+      "e2e": "pass",
+      "browser-desktop": "pass",
+      "browser-mobile": "pass",
+      "production-build": "blocked"
+    },
+    "external_blockers": [
+      "database",
+      "payments",
+      "queue",
+      "object-storage",
+      "external-provider",
+      "deployment",
+      "secrets"
+    ],
+    "token_efficiency": "unknown"
+  }
+}

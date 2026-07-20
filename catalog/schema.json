@@ -22,7 +22,16 @@
           "status": {"enum": ["preferred", "available-explicit", "available-implicit", "candidate", "quarantined", "verified", "rejected", "cached-not-enabled", "missing"]},
           "implicit_invocation": {"type": "boolean"},
           "capabilities": {"type": "array", "items": {"type": "string"}},
-          "trust_tier": {"type": "string"}
+          "trust_tier": {"type": "string"},
+          "value_profile": {
+            "type": "object",
+            "properties": {
+              "context_cost": {"enum": ["low", "medium", "high", "unknown"]},
+              "native_overlap": {"enum": ["low", "medium", "high", "unknown"]},
+              "maintenance": {"enum": ["current", "stale", "unknown"]}
+            },
+            "additionalProperties": false
+          }
         },
         "additionalProperties": true
       }

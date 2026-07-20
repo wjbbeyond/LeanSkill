@@ -23,6 +23,8 @@ No state transition implies installation. Installation is a separate user-author
 
 ## Candidate score
 
+This score governs discovery and promotion. It is separate from the planning-time decision score described in `skills/leanskill-router/references/value-model.md`.
+
 | Dimension | Weight |
 |---|---:|
 | Capability gap coverage | 30 |
@@ -32,6 +34,18 @@ No state transition implies installation. Installation is a separate user-author
 | Token, time, and workflow cost | 10 |
 
 Promotion requires at least 75/100, no critical security failure, repeatable evaluation evidence, and no simpler native or installed alternative with comparable results. Visual skills also require blind review of rendered output, not prompt quality alone.
+
+## Planning feedback
+
+Outcome recording is opt-in, local, and performed through explicit LeanSkill Lab evaluation rather than every project checkpoint. Store only project type, phase, quality, risk, selected invocations, aggregate gate results, generic external blocker categories, and measured Token comparison. Do not store identity, paths, prompts, source, secrets, or free-form notes.
+
+Treat `local-success-external-blocked` as positive evidence for the authorized local slice, not proof that production integration is complete. Use `unknown` unless Token efficiency was compared against a native baseline.
+
+## Execution ownership
+
+LeanSkill ends after it writes the initial advisory plan. Native Codex owns implementation and may directly use any installed Skill when useful. Do not re-run LeanSkill because of a phase change, failed gate, changed risk, or new feature in an existing project. Re-plan only on an explicit user request.
+
+The initial limit is one primary plus at most two specialists. Any Skill required transitively by a selected Skill counts toward that limit and must be disclosed.
 
 ## Discovery report fields
 

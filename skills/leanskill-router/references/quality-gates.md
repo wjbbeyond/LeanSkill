@@ -22,4 +22,4 @@ Authentication, payments, secrets, production data, database migrations, destruc
 
 ## Stop conditions
 
-Stop expanding the workflow when the selected route can satisfy the acceptance criteria. Log optional improvements for later. Re-route only when a gate fails for a capability reason, not merely because implementation is difficult.
+Stop expanding the workflow when the selected route can satisfy the acceptance criteria. Log optional improvements for later. A failed gate is handled by native Codex and does not trigger LeanSkill; re-plan only when the user explicitly requests it.

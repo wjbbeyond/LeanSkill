@@ -1,5 +1,6 @@
 state/backups/
 state/*.manifest.json
+state/outcomes.jsonl
 quarantine/**
 !quarantine/README.md
 reports/*.md

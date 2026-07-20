@@ -1,5 +1,8 @@
 {
   "schema_version": 1,
+  "routing_mode": "plan-once",
   "lab_root": "/absolute/path/to/LeanSkill",
-  "catalog_path": "/absolute/path/to/LeanSkill/catalog/registry.json"
+  "catalog_path": "/absolute/path/to/LeanSkill/catalog/registry.json",
+  "feedback_path": "/absolute/path/to/LeanSkill/state/outcomes.jsonl",
+  "record_outcomes": false
 }

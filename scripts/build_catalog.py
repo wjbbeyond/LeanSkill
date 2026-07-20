@@ -15,6 +15,8 @@ from typing import Any, Iterable
 
 PREFERRED = {
     "leanskill-router",
+    "skill-creator",
+    "plugin-creator",
     "frontend-design",
     "build-web-apps:frontend-app-builder",
     "build-web-apps:frontend-testing-debugging",
@@ -35,6 +37,7 @@ REVIEWED_LOCAL = {
 }
 
 CAPABILITY_RULES = {
+    "developer-tooling": r"skill.creator|plugin.creator|codex\s+(?:skill|plugin)|creat(?:e|ing).{0,20}(?:skill|plugin)|capability router|skill router|developer tool",
     "frontend": r"front.?end|react|vue|svelte|ui|ux|web app|shadcn",
     "visual-design": r"design|taste|visual|brand|typography|color|image.to.code",
     "ios": r"ios|swift|swiftui|xcode|simulator",
@@ -88,8 +91,8 @@ def make_entry(skill_file: Path, origin: str, prefix: str | None = None) -> dict
     invocation = f"{prefix}:{name}" if prefix else name
     implicit = implicit_policy(skill_file.parent)
     status = "preferred" if invocation in PREFERRED else "available-implicit" if implicit else "available-explicit"
-    if origin == "official-plugin":
-        trust = "official-plugin"
+    if origin in {"official-plugin", "official-system"}:
+        trust = origin
     elif name == "leanskill-router":
         trust = "local-system"
     elif name in REVIEWED_LOCAL:
@@ -159,6 +162,7 @@ def main() -> int:
     args = parser.parse_args()
 
     entries = [make_entry(path, "personal") for path in skill_files(args.codex_skills, exclude_system=True)]
+    entries += [make_entry(path, "official-system") for path in skill_files(args.codex_skills / ".system")]
     entries += [make_entry(path, "shared") for path in skill_files(args.shared_skills)]
     plugins, enabled = ([], []) if args.skip_plugins else plugin_inventory()
     for plugin_name, plugin_path in enabled:
