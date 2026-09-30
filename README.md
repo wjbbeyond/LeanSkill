@@ -121,6 +121,13 @@ python3 skills/leanskill-router/scripts/record_outcome.py \
 
 ## Validate
 
+Unmarked legacy Global project capability routing instructions now require manual
+migration before installation. The installer leaves the original file unchanged;
+preserve custom rules when replacing that legacy section. Discovered plugin and
+personal skill names no longer imply official or reviewed provenance. Policy
+changes save all backups and the recovery manifest before writing any targets;
+retain that manifest if a failure also prevents automatic rollback.
+
 ```bash
 python3 scripts/validate_catalog.py evals/catalog.fixture.json
 python3 scripts/evaluate_router.py \

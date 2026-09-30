@@ -93,7 +93,7 @@ def replace_agents_block(original: str) -> str:
         and "$project-dev-router" in original
         and "CodexSkillLab catalog" in original
     ):
-        return AGENTS_BLOCK + "\n"
+        raise RuntimeError("Unmarked legacy AGENTS instructions require manual migration; original content preserved")
     separator = "" if not original else "\n" if original.endswith("\n") else "\n\n"
     return original + separator + AGENTS_BLOCK + "\n"
 
@@ -255,6 +255,8 @@ def install(args: argparse.Namespace, p: dict[str, Path]) -> int:
         print(json.dumps({**planned_actions(p, "install"), "dry_run": True}, ensure_ascii=False, indent=2))
         return 0
 
+    agents_original = p["global_agents"].read_text(encoding="utf-8", errors="strict") if p["global_agents"].exists() else ""
+    agents_updated = replace_agents_block(agents_original)
     ensure_local_templates(p["repo_root"])
     build_catalog(p)
     existing = p["manifest"].exists()
@@ -264,8 +266,7 @@ def install(args: argparse.Namespace, p: dict[str, Path]) -> int:
     previous_config = json.loads(p["config"].read_text(encoding="utf-8")) if p["config"].is_file() else {}
 
     atomic_copy_tree(p["source_skill"], p["skill_target"])
-    agents_original = p["global_agents"].read_text(encoding="utf-8", errors="strict") if p["global_agents"].exists() else ""
-    atomic_write(p["global_agents"], replace_agents_block(agents_original).encode("utf-8"))
+    atomic_write(p["global_agents"], agents_updated.encode("utf-8"))
     config = {
         "schema_version": 1,
         "routing_mode": "plan-once",

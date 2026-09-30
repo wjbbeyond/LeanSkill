@@ -58,6 +58,7 @@ def apply_changes(targets: list[tuple[str, Path, Path]], backup_root: Path) -> d
     records = []
     changed = 0
     already_explicit = 0
+    updates = []
     backup_root.mkdir(parents=True, exist_ok=False)
     for label, root, skill_dir in targets:
         policy_file = skill_dir / "agents" / "openai.yaml"
@@ -72,7 +73,7 @@ def apply_changes(targets: list[tuple[str, Path, Path]], backup_root: Path) -> d
             shutil.copy2(policy_file, backup_path)
         needs_change = original != updated
         if needs_change:
-            atomic_write(policy_file, updated)
+            updates.append((policy_file, updated))
             changed += 1
         else:
             already_explicit += 1
@@ -96,6 +97,13 @@ def apply_changes(targets: list[tuple[str, Path, Path]], backup_root: Path) -> d
     manifest_path = backup_root / "manifest.json"
     atomic_write(manifest_path, (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
     manifest["manifest_path"] = str(manifest_path)
+    try:
+        for policy_file, updated in updates:
+            atomic_write(policy_file, updated)
+    except OSError:
+        # The complete recovery manifest already exists, even if rollback fails.
+        restore(manifest_path)
+        raise
     return manifest
 
 
@@ -109,6 +117,8 @@ def restore(manifest_path: Path) -> dict[str, int]:
             continue
         target = Path(record["target"])
         current = target.read_bytes() if target.exists() else b""
+        if sha256(current) == record["original_sha256"]:
+            continue
         if sha256(current) != record["updated_sha256"]:
             conflicts += 1
             continue
