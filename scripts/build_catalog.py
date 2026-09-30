@@ -27,15 +27,6 @@ PREFERRED = {
     "chrome:control-chrome",
 }
 
-REVIEWED_LOCAL = {
-    "design-taste-frontend", "design-taste-frontend-v1", "gpt-taste", "minimalist-ui",
-    "industrial-brutalist-ui", "high-end-visual-design", "redesign-existing-projects",
-    "full-output-enforcement", "image-to-code", "imagegen-frontend-web",
-    "imagegen-frontend-mobile", "brandkit", "gsap-core", "gsap-frameworks",
-    "gsap-performance", "gsap-plugins", "gsap-react", "gsap-scrolltrigger",
-    "gsap-timeline", "gsap-utils",
-}
-
 CAPABILITY_RULES = {
     "developer-tooling": r"skill.creator|plugin.creator|codex\s+(?:skill|plugin)|creat(?:e|ing).{0,20}(?:skill|plugin)|capability router|skill router|developer tool",
     "frontend": r"front.?end|react|vue|svelte|ui|ux|web app|shadcn",
@@ -93,10 +84,6 @@ def make_entry(skill_file: Path, origin: str, prefix: str | None = None) -> dict
     status = "preferred" if invocation in PREFERRED else "available-implicit" if implicit else "available-explicit"
     if origin in {"official-plugin", "official-system"}:
         trust = origin
-    elif name == "leanskill-router":
-        trust = "local-system"
-    elif name in REVIEWED_LOCAL:
-        trust = "reviewed-local"
     else:
         trust = "local-unverified" if origin == "personal" else "community-local"
     return {
@@ -167,7 +154,7 @@ def main() -> int:
     plugins, enabled = ([], []) if args.skip_plugins else plugin_inventory()
     for plugin_name, plugin_path in enabled:
         for path in skill_files(plugin_path / "skills"):
-            entries.append(make_entry(path, "official-plugin", plugin_name))
+            entries.append(make_entry(path, "plugin-unverified", plugin_name))
 
     entries.sort(key=lambda item: (item["invocation"], item["origin"], item["path"]))
     catalog = {

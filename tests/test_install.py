@@ -122,10 +122,13 @@ class InstallerTests(unittest.TestCase):
         )
         (self.codex / "AGENTS.md").write_text(old_agents, encoding="utf-8")
 
-        self.run_installer("install")
-        self.assertNotIn("$project-dev-router", (self.codex / "AGENTS.md").read_text(encoding="utf-8"))
+        old_agents += "\n# User rules\nPreserve my custom instructions.\n"
+        (self.codex / "AGENTS.md").write_text(old_agents, encoding="utf-8")
+        self.run_installer("install", expected=1)
+        self.assertEqual((self.codex / "AGENTS.md").read_text(encoding="utf-8"), old_agents)
+        self.assertFalse((self.codex / "skills" / "leanskill-router").exists())
         self.assertIn(
-            "allow_implicit_invocation: false",
+            "allow_implicit_invocation: true",
             (legacy / "agents" / "openai.yaml").read_text(encoding="utf-8"),
         )
 

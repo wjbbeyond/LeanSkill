@@ -27,8 +27,8 @@ SENSITIVE = re.compile(r"/(?:Users|home)/|\bsk-[A-Za-z0-9_-]{12,}|BEGIN (?:RSA |
 
 def load_config() -> dict[str, Any]:
     for path in (
-        Path.home() / ".codex" / "leanskill" / "config.json",
-        Path.home() / ".codex" / "skill-lab" / "config.json",
+        Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "leanskill" / "config.json",
+        Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "skill-lab" / "config.json",
     ):
         if path.is_file():
             return json.loads(path.read_text(encoding="utf-8"))

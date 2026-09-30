@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -113,8 +114,8 @@ def load_jsonl(path: Path | None) -> list[dict[str, Any]]:
 
 def default_config() -> dict[str, Any]:
     candidates = [
-        Path.home() / ".codex" / "leanskill" / "config.json",
-        Path.home() / ".codex" / "skill-lab" / "config.json",
+        Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "leanskill" / "config.json",
+        Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "skill-lab" / "config.json",
     ]
     for config in candidates:
         if config.exists():
